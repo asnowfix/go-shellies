@@ -1,4 +1,4 @@
-module pkg/shelly/shttp
+module github.com/asnowfix/go-shellies/shttp
 
 go 1.23.0
 

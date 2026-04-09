@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"pkg/shelly/sswitch"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/sswitch"
+	"github.com/asnowfix/go-shellies/types"
 	"time"
 
 	"github.com/go-logr/logr"

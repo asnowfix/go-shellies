@@ -3,7 +3,7 @@ package shelly
 import (
 	"context"
 	"fmt"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/types"
 
 	"github.com/go-logr/logr"
 )

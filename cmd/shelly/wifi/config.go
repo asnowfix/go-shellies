@@ -4,21 +4,21 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"hlog"
-	"myhome"
+	"github.com/asnowfix/home-automation/hlog"
+	"github.com/asnowfix/home-automation/internal/myhome"
 	"reflect"
 
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 
-	"pkg/devices"
-	shellyapi "pkg/shelly"
-	"pkg/shelly/shelly"
-	"pkg/shelly/types"
-	"pkg/shelly/wifi"
+	"github.com/asnowfix/go-shellies/devices"
+	shellyapi "github.com/asnowfix/go-shellies"
+	"github.com/asnowfix/go-shellies/shelly"
+	"github.com/asnowfix/go-shellies/types"
+	"github.com/asnowfix/go-shellies/wifi"
 
-	"myhome/ctl/options"
+	"github.com/asnowfix/home-automation/myhome/ctl/options"
 )
 
 var flags struct {

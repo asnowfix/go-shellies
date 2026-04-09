@@ -1,4 +1,4 @@
-module pkg/shelly/wifi
+module github.com/asnowfix/go-shellies/wifi
 
 go 1.23.0
 

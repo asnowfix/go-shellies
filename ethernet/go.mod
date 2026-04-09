@@ -1,4 +1,4 @@
-module pkg/shelly/ethernet
+module github.com/asnowfix/go-shellies/ethernet
 
 go 1.23.0
 

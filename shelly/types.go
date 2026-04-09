@@ -2,12 +2,12 @@ package shelly
 
 import (
 	"encoding/json"
-	"pkg/shelly/ethernet"
-	"pkg/shelly/mqtt"
-	"pkg/shelly/sswitch"
-	"pkg/shelly/system"
-	"pkg/shelly/wifi"
-	"schedule"
+	"github.com/asnowfix/go-shellies/ethernet"
+	"github.com/asnowfix/go-shellies/mqtt"
+	"github.com/asnowfix/go-shellies/sswitch"
+	"github.com/asnowfix/go-shellies/system"
+	"github.com/asnowfix/go-shellies/wifi"
+	"github.com/asnowfix/go-shellies/schedule"
 )
 
 type Product struct {

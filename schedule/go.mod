@@ -1,4 +1,4 @@
-module schedule
+module github.com/asnowfix/go-shellies/schedule
 
 go 1.23.0
 

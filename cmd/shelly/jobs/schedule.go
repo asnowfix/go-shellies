@@ -3,19 +3,19 @@ package jobs
 import (
 	"context"
 	"fmt"
-	"myhome"
-	"myhome/ctl/options"
+	"github.com/asnowfix/home-automation/internal/myhome"
+	"github.com/asnowfix/home-automation/myhome/ctl/options"
 	"reflect"
 
-	"hlog"
-	"schedule"
+	"github.com/asnowfix/home-automation/hlog"
+	"github.com/asnowfix/go-shellies/schedule"
 
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
 
-	"pkg/devices"
-	"pkg/shelly"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/devices"
+	"github.com/asnowfix/go-shellies"
+	"github.com/asnowfix/go-shellies/types"
 )
 
 var scheduleCtl = &cobra.Command{

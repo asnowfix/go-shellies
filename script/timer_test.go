@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"pkg/shelly/mqtt"
+	"github.com/asnowfix/go-shellies/mqtt"
 
 	"github.com/dop251/goja"
 	"github.com/go-logr/logr"

@@ -4,20 +4,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"hlog"
-	"myhome"
+	"github.com/asnowfix/home-automation/hlog"
+	"github.com/asnowfix/home-automation/internal/myhome"
 	"reflect"
 
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 
-	"pkg/devices"
-	"pkg/shelly"
-	"pkg/shelly/kvs"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/devices"
+	"github.com/asnowfix/go-shellies"
+	"github.com/asnowfix/go-shellies/kvs"
+	"github.com/asnowfix/go-shellies/types"
 
-	"myhome/ctl/options"
+	"github.com/asnowfix/home-automation/myhome/ctl/options"
 )
 
 func init() {

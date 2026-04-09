@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"pkg/shelly/kvs"
-	shellyrpc "pkg/shelly/shelly"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/kvs"
+	shellyrpc "github.com/asnowfix/go-shellies/shelly"
+	"github.com/asnowfix/go-shellies/types"
 )
 
 // FetchDeviceState fetches the live state of a Shelly device and returns a

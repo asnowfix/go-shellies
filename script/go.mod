@@ -1,4 +1,4 @@
-module pkg/shelly/script
+module github.com/asnowfix/go-shellies/script
 
 go 1.23.0
 

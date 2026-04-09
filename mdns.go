@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"net"
-	"pkg/devices"
-	"pkg/shelly/shelly"
+	"github.com/asnowfix/go-shellies/devices"
+	"github.com/asnowfix/go-shellies/shelly"
 	"strconv"
 	"strings"
 

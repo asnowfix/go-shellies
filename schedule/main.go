@@ -4,7 +4,7 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/types"
 
 	"github.com/go-logr/logr"
 )

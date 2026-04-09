@@ -2,7 +2,7 @@ package http
 
 import (
 	"net/http"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/types"
 	"reflect"
 
 	"github.com/go-logr/logr"

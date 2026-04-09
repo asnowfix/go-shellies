@@ -9,12 +9,12 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
 	
-	"hlog"
-	"myhome"
-	"myhome/ctl/options"
-	"pkg/devices"
-	"pkg/shelly"
-	"pkg/shelly/types"
+	"github.com/asnowfix/home-automation/hlog"
+	"github.com/asnowfix/home-automation/internal/myhome"
+	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/devices"
+	"github.com/asnowfix/go-shellies"
+	"github.com/asnowfix/go-shellies/types"
 )
 
 var Cmd = &cobra.Command{

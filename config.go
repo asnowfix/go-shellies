@@ -3,8 +3,8 @@ package shelly
 import (
 	"context"
 	"fmt"
-	"pkg/shelly/system"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/system"
+	"github.com/asnowfix/go-shellies/types"
 
 	"github.com/go-logr/logr"
 )

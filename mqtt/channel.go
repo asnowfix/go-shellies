@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"pkg/shelly/types"
+	"github.com/asnowfix/go-shellies/types"
 	"time"
 
 	"github.com/go-logr/logr"

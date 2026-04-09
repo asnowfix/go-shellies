@@ -1,4 +1,4 @@
-module pkg/shelly/input
+module github.com/asnowfix/go-shellies/input
 
 go 1.23.0
 

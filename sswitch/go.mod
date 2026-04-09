@@ -1,4 +1,4 @@
-module pkg/shelly/sswitch
+module github.com/asnowfix/go-shellies/sswitch
 
 go 1.23.0
 
