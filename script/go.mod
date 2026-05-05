@@ -1,12 +1,15 @@
 module github.com/asnowfix/go-shellies/script
 
-go 1.23.0
+go 1.25.5
 
 require (
+	github.com/asnowfix/go-shellies v0.0.0-00010101000000-000000000000
 	github.com/dop251/goja v0.0.0-20251103141225-af2ceb9156d7
 	github.com/go-logr/logr v1.4.3
 	github.com/tdewolff/minify/v2 v2.24.3
 )
+
+replace github.com/asnowfix/go-shellies => ../
 
 require (
 	github.com/dlclark/regexp2 v1.11.4 // indirect

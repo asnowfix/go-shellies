@@ -4,9 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/asnowfix/home-automation/hlog"
-	"github.com/asnowfix/home-automation/internal/myhome"
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 	"github.com/asnowfix/go-shellies/devices"
 	"github.com/asnowfix/go-shellies"
 	"github.com/asnowfix/go-shellies/system"
@@ -61,7 +60,7 @@ Examples:
   # myhome ctl shelly sys config shelly1minig3-abc123 --ecomode`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := myhome.Foreach(cmd.Context(), hlog.Logger, args[0], options.Via, oneDeviceConfig, options.Args(args))
+		_, err := dispatch.Foreach(cmd.Context(), options.Log, args[0], options.Via, oneDeviceConfig, options.Args(args))
 		return err
 	},
 }

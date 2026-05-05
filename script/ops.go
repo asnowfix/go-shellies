@@ -1,12 +1,10 @@
 package script
 
 import (
-	"io/fs"
 	"net/http"
-	"github.com/asnowfix/go-shellies/types"
 	"reflect"
 
-	"github.com/asnowfix/home-automation/hlog"
+	"github.com/asnowfix/go-shellies/types"
 
 	"github.com/go-logr/logr"
 )
@@ -37,10 +35,12 @@ const (
 	Eval      Verb = "Script.Eval"
 )
 
-func Init(l logr.Logger, r types.MethodsRegistrar, scriptsFS fs.FS) {
-	log = hlog.GetLogger("pkg/shelly/script")
+// Init registers the script.* method handlers. To use ReadEmbeddedFile or
+// the embedded-script path of Upload/Run, the caller must also call SetFS()
+// with an fs.FS containing the scripts.
+func Init(l logr.Logger, r types.MethodsRegistrar) {
+	log = l.WithName("script")
 	log.Info("Init", "package", reflect.TypeOf(empty{}).PkgPath())
-	setFS(scriptsFS)
 	r.RegisterMethodHandler(SetConfig.String(), types.MethodHandler{
 		// InputType:  reflect.TypeOf(ConfigurationRequest{}),
 		Allocate:   func() any { return new(Configuration) },

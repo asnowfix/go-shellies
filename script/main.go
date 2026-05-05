@@ -17,8 +17,9 @@ var scripts fs.FS
 
 // Package logger is declared in ops.go
 
-// setFS sets the filesystem to use for reading script files
-func setFS(scriptsFS fs.FS) {
+// SetFS sets the filesystem from which embedded scripts are read by
+// ReadEmbeddedFile and by the buf-empty branches of Upload/Run.
+func SetFS(scriptsFS fs.FS) {
 	scripts = scriptsFS
 }
 

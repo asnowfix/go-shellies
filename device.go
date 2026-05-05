@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	_ "github.com/asnowfix/home-automation/internal/myhome/net"
 	"net"
 	"github.com/asnowfix/go-shellies/devices"
 	"github.com/asnowfix/go-shellies/mqtt"

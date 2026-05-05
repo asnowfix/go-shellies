@@ -9,9 +9,8 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
 	
-	"github.com/asnowfix/home-automation/hlog"
-	"github.com/asnowfix/home-automation/internal/myhome"
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 	"github.com/asnowfix/go-shellies/devices"
 	"github.com/asnowfix/go-shellies"
 	"github.com/asnowfix/go-shellies/types"
@@ -32,7 +31,7 @@ var Cmd = &cobra.Command{
 			}
 		}
 		
-		_, err := myhome.Foreach(cmd.Context(), hlog.Logger, deviceId, options.Via, callOneDevice, []string{method, args[2]})
+		_, err := dispatch.Foreach(cmd.Context(), options.Log, deviceId, options.Via, callOneDevice, []string{method, args[2]})
 		return err
 	},
 }

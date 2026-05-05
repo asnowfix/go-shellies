@@ -11,9 +11,8 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/spf13/cobra"
 
-	"github.com/asnowfix/home-automation/hlog"
-	"github.com/asnowfix/home-automation/internal/myhome"
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 	"github.com/asnowfix/go-shellies/devices"
 	"github.com/asnowfix/go-shellies"
 	"github.com/asnowfix/go-shellies/types"
@@ -28,7 +27,7 @@ var Cmd = &cobra.Command{
 
 		srv.AddTool(
 			mcpgo.NewTool("shelly_list",
-				mcpgo.WithDescription("List all Shelly devices known to the myhome daemon (id, name, host, mac)."),
+				mcpgo.WithDescription("Discover Shelly devices on the local network via mDNS (id, name, host, mac)."),
 				mcpgo.WithString("filter",
 					mcpgo.Description(`Optional name substring filter, e.g. "pool". Defaults to "*" (all devices).`)),
 			),
@@ -59,7 +58,7 @@ func handleList(ctx context.Context, req mcpgo.CallToolRequest) (*mcpgo.CallTool
 		filter = "*"
 	}
 
-	devs, err := myhome.TheClient.LookupDevices(ctx, filter)
+	devs, err := dispatch.Lookup(ctx, options.Log, filter, options.Via)
 	if err != nil {
 		return mcpgo.NewToolResultError(err.Error()), nil
 	}
@@ -84,7 +83,7 @@ func handleCall(ctx context.Context, req mcpgo.CallToolRequest) (*mcpgo.CallTool
 		return mcpgo.NewToolResultError(fmt.Sprintf("invalid params JSON: %v", err)), nil
 	}
 
-	result, err := myhome.Foreach(ctx, hlog.Logger, deviceID, options.Via,
+	result, err := dispatch.Foreach(ctx, options.Log, deviceID, options.Via,
 		func(ctx context.Context, log logr.Logger, via types.Channel, device devices.Device, _ []string) (any, error) {
 			sd, ok := device.(*shelly.Device)
 			if !ok {

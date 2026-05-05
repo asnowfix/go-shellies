@@ -4,9 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/asnowfix/home-automation/hlog"
-	"github.com/asnowfix/home-automation/internal/myhome"
-	mqttclient "github.com/asnowfix/home-automation/myhome/mqtt"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
 	"reflect"
 
 	"github.com/go-logr/logr"
@@ -19,7 +17,7 @@ import (
 	"github.com/asnowfix/go-shellies/shelly"
 	"github.com/asnowfix/go-shellies/types"
 
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 )
 
 func init() {
@@ -31,7 +29,7 @@ var configCmd = &cobra.Command{
 	Short: "Get & set Shelly devices MQTT configuration",
 	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := myhome.Foreach(cmd.Context(), hlog.Logger, args[0], options.Via, configOneDevice, options.Args(args))
+		_, err := dispatch.Foreach(cmd.Context(), options.Log, args[0], options.Via, configOneDevice, options.Args(args))
 		return err
 	},
 }
@@ -57,12 +55,10 @@ func configOneDevice(ctx context.Context, log logr.Logger, via types.Channel, de
 	config.RpcNotifs = true
 	config.StatusNotifs = true
 
-	mc, err := mqttclient.GetClientE(ctx)
-	if err != nil {
-		log.Error(err, "Unable to get MQTT client to reach device")
-		return nil, err
+	if options.Flags.MqttBroker == "" {
+		return nil, fmt.Errorf("--mqtt-broker is required to configure the device's MQTT server")
 	}
-	config.Server = mc.BrokerUrl().String()
+	config.Server = options.Flags.MqttBroker
 
 	out, err = sd.CallE(ctx, via, shellymqtt.SetConfig.String(), shellymqtt.SetConfigRequest{
 		Config: *config,

@@ -3,9 +3,8 @@ package reboot
 import (
 	"context"
 	"fmt"
-	"github.com/asnowfix/home-automation/hlog"
-	"github.com/asnowfix/home-automation/internal/myhome"
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 	"github.com/asnowfix/go-shellies/devices"
 	shellyapi "github.com/asnowfix/go-shellies"
 	"github.com/asnowfix/go-shellies/shelly"
@@ -22,7 +21,7 @@ var Cmd = &cobra.Command{
 	Short: "Reboot Shelly device",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := myhome.Foreach(cmd.Context(), hlog.Logger, args[0], options.Via, oneDeviceReboot, options.Args(args))
+		_, err := dispatch.Foreach(cmd.Context(), options.Log, args[0], options.Via, oneDeviceReboot, options.Args(args))
 		return err
 	},
 }

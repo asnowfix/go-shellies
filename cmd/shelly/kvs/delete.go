@@ -3,11 +3,10 @@ package kvs
 import (
 	"context"
 	"fmt"
-	"github.com/asnowfix/home-automation/hlog"
-	"github.com/asnowfix/home-automation/internal/myhome"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
 	"reflect"
 
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
@@ -27,9 +26,9 @@ var deleteCtl = &cobra.Command{
 	Short: "Delete matching key-value from given shelly devices",
 	Args:  cobra.RangeArgs(1, 2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		log := hlog.Logger
+		log := options.Log
 		device := args[0]
-		_, err := myhome.Foreach(cmd.Context(), log, device, options.Via, doDeleteKeys, options.Args(args))
+		_, err := dispatch.Foreach(cmd.Context(), log, device, options.Via, doDeleteKeys, options.Args(args))
 		return err
 	},
 }

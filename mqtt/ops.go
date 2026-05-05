@@ -3,14 +3,13 @@ package mqtt
 import (
 	"context"
 	"fmt"
-	"github.com/asnowfix/go-shellies/types"
-	"time"
-
 	"net/http"
 	"reflect"
+	"time"
+
+	"github.com/asnowfix/go-shellies/types"
 
 	"github.com/go-logr/logr"
-	"golang.org/x/exp/rand"
 )
 
 type empty struct{}
@@ -51,10 +50,6 @@ func Init(log logr.Logger, r types.MethodsRegistrar, mc Client, timeout time.Dur
 	SetClient(mc)
 	mqttChannel.Init(log, timeout)
 	registrar.RegisterDeviceCaller(types.ChannelMqtt, types.DeviceCaller(mqttChannel.CallDevice))
-}
-
-func init() {
-	rand.Seed(uint64(time.Now().UnixNano()))
 }
 
 func SetServer(ctx context.Context, via types.Channel, device types.Device, server string) (*SetConfigResponse, error) {

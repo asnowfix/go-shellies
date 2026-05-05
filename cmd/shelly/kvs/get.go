@@ -3,8 +3,7 @@ package kvs
 import (
 	"context"
 	"fmt"
-	"github.com/asnowfix/home-automation/hlog"
-	"github.com/asnowfix/home-automation/internal/myhome"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
 	"reflect"
 
 	"github.com/go-logr/logr"
@@ -15,7 +14,7 @@ import (
 	"github.com/asnowfix/go-shellies/kvs"
 	"github.com/asnowfix/go-shellies/types"
 
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 )
 
 func init() {
@@ -31,7 +30,7 @@ var getCtl = &cobra.Command{
 		if len(args) == 2 {
 			match = args[1]
 		}
-		_, err := myhome.Foreach(cmd.Context(), hlog.Logger, args[0], options.Via, get, []string{match})
+		_, err := dispatch.Foreach(cmd.Context(), options.Log, args[0], options.Via, get, []string{match})
 		return err
 	},
 }

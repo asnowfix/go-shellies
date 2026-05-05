@@ -3,11 +3,10 @@ package jobs
 import (
 	"context"
 	"fmt"
-	"github.com/asnowfix/home-automation/internal/myhome"
-	"github.com/asnowfix/home-automation/myhome/ctl/options"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
 	"reflect"
 
-	"github.com/asnowfix/home-automation/hlog"
 	"github.com/asnowfix/go-shellies/schedule"
 
 	"github.com/go-logr/logr"
@@ -23,7 +22,7 @@ var scheduleCtl = &cobra.Command{
 	Short: "Configure Shelly devices scheduled jobs",
 	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := myhome.Foreach(cmd.Context(), hlog.Logger, args[0], options.Via, scheduleOneDeviceJobs, options.Args(args))
+		_, err := dispatch.Foreach(cmd.Context(), options.Log, args[0], options.Via, scheduleOneDeviceJobs, options.Args(args))
 		return err
 	},
 }
