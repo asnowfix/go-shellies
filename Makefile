@@ -40,9 +40,9 @@ lint:
 	golangci-lint run ./...
 
 orb-test:
-	orb run -m $(ORB_MACHINE) -- bash -lc "cd $(CURDIR) && GOFLAGS='-race -count=1' make test"
+	orb run -m $(ORB_MACHINE) bash -lc "cd $(CURDIR) && GOWORK=off GOFLAGS='-race -count=1' make test"
 
 orb-build:
-	orb run -m $(ORB_MACHINE) -- bash -lc "cd $(CURDIR) && go build -trimpath -ldflags='-s -w' -o /tmp/shelly ./cmd/shelly && du -h /tmp/shelly"
+	orb run -m $(ORB_MACHINE) bash -lc "cd $(CURDIR) && GOWORK=off go build -trimpath -ldflags='-s -w' -o /tmp/shelly ./cmd/shelly && du -h /tmp/shelly"
 
 .PHONY: help build snapshot test tidy lint orb-test orb-build
