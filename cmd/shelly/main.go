@@ -25,6 +25,13 @@ import (
 	"github.com/asnowfix/go-shellies/types"
 )
 
+// Set via -ldflags "-X main.version=..."
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "shelly",
 	Short: "Direct CLI for Shelly devices",
@@ -61,6 +68,13 @@ func init() {
 	pf.DurationVar(&options.Flags.ShellyRateLimit, "shelly-rate-limit", options.ShellyDefaultRateLimit, "min interval between consecutive RPCs to the same device")
 	pf.String("via", "http", "channel: http (mDNS+HTTP) or mqtt (MQTT broker)")
 
+	rootCmd.AddCommand(&cobra.Command{
+		Use:   "version",
+		Short: "Print version information",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Printf("%s (commit %s, built %s)\n", version, commit, date)
+		},
+	})
 	rootCmd.AddCommand(call.Cmd)
 	rootCmd.AddCommand(components.Cmd)
 	rootCmd.AddCommand(emulate.Cmd)

@@ -1,0 +1,43 @@
+name: Release
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.x'
+      - name: Run make test
+        run: make test
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate binary version
+        run: |
+          set -euo pipefail
+          EXPECTED_TAG="${{ github.ref_name }}"
+          BINARY=$(find dist -maxdepth 2 -name shelly -type f | grep linux | grep amd64 | head -1)
+          chmod +x "$BINARY"
+          VERSION=$("$BINARY" version | awk '{print $1}')
+          echo "Expected: $EXPECTED_TAG  Got: $VERSION"
+          if [[ "$VERSION" != "$EXPECTED_TAG" ]]; then
+            echo "Version mismatch" >&2; exit 1
+          fi
+          echo "Version validation passed"
