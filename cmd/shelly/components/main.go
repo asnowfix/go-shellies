@@ -1,0 +1,57 @@
+package components
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/asnowfix/go-shellies/cmd/shelly/dispatch"
+	"github.com/asnowfix/go-shellies/cmd/shelly/options"
+	"github.com/asnowfix/go-shellies/devices"
+	shellyapi "github.com/asnowfix/go-shellies"
+	"github.com/asnowfix/go-shellies/shelly"
+	"github.com/asnowfix/go-shellies/types"
+	"reflect"
+
+	"github.com/go-logr/logr"
+	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
+)
+
+var Cmd = &cobra.Command{
+	Use:   "components",
+	Short: "Give Shelly components list, config & status",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		_, err := dispatch.Foreach(cmd.Context(), options.Log, args[0], options.Via, doList, options.Args(args))
+		return err
+	},
+}
+
+func doList(ctx context.Context, log logr.Logger, via types.Channel, device devices.Device, args []string) (any, error) {
+	sd, ok := device.(*shellyapi.Device)
+	if !ok {
+		return nil, fmt.Errorf("device is not a Shelly: %s %v", reflect.TypeOf(device), device)
+	}
+
+	components, err := shelly.DoGetComponents(ctx, sd, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// Now show the result config
+	if options.Flags.Json {
+		s, err := json.Marshal(components)
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println(string(s))
+	} else {
+		s, err := yaml.Marshal(components)
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println(string(s))
+	}
+
+	return components, nil
+}

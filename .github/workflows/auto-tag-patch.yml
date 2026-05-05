@@ -1,0 +1,67 @@
+name: auto-tag-patch
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+on:
+  pull_request:
+    types: [closed]
+    branches: 'v[0-9]+.[0-9]+.x'
+jobs:
+  tag-patch:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.x'
+      - name: Run make test
+        run: make test
+      - name: Get previous tag (constrained to branch line)
+        id: previoustag
+        run: |
+          set -euo pipefail
+          BRANCH="${{ github.event.pull_request.base.ref }}"
+          if [[ "$BRANCH" =~ ^v([0-9]+)\.([0-9]+)\.x$ ]]; then
+            MAJOR="${BASH_REMATCH[1]}"
+            MINOR="${BASH_REMATCH[2]}"
+            PREFIX="v${MAJOR}.${MINOR}."
+          else
+            echo "Branch '$BRANCH' does not match v<MAJOR>.<MINOR>.x" >&2
+            exit 1
+          fi
+          PREV_TAG=$(git tag --list "${PREFIX}*" --sort=-v:refname | head -n1 || true)
+          if [[ -z "${PREV_TAG}" ]]; then
+            PREV_TAG="${PREFIX}0"
+          fi
+          echo "tag=${PREV_TAG}" | tee -a "$GITHUB_OUTPUT"
+      - name: Calculate next patch version
+        id: semver
+        run: |
+          PREV_TAG="${{ steps.previoustag.outputs.tag }}"
+          if [[ "$PREV_TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            MAJOR="${BASH_REMATCH[1]}"
+            MINOR="${BASH_REMATCH[2]}"
+            PATCH="${BASH_REMATCH[3]}"
+            NEXT_VERSION="v${MAJOR}.${MINOR}.$((PATCH + 1))"
+            echo "v_patch=${NEXT_VERSION}" | tee -a "$GITHUB_OUTPUT"
+          else
+            echo "Failed to parse version from tag: $PREV_TAG" >&2
+            exit 1
+          fi
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_config_global: true
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+      - name: Create signed tag
+        run: |
+          git tag -s "${{ steps.semver.outputs.v_patch }}" -m "Release ${{ steps.semver.outputs.v_patch }}"
+          git push origin "${{ steps.semver.outputs.v_patch }}"
